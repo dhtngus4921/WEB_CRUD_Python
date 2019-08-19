@@ -6,7 +6,7 @@ import cgi, os
 files = os.listdir('data')
 listStr= ''
 for item in files:
-    listStr = listStr+'<li><a href="index.py?id={name}"</a></li>'.format(name=item)
+    listStr = listStr+'<li><a href="index.py?id={name}">{name}</a></li>'.format(name=item)
 
 form=cgi.FieldStorage()
 if 'id' in form:
@@ -30,12 +30,18 @@ print('''<!doctype html>
     <ol>
       {listStr}
     </ol>
-  <div id="article">
+    <div id="article">
     <h2>{title}</h2>
     {desc}
     <p>
         <img src="{title}.jpg" width="50%">
     </p>
+    <form action="process_create.py" method="post">
+        <a href="create.py">Opinion</a>
+        <p><input type="text" name="title" placeholder="title"></p>
+        <p><textarea rows="4" name="description" placeholder="description"></textarea></p>
+        <p><input type="submit"></p>
+    </form>
   </div>
 </div>
 
