@@ -3,35 +3,26 @@ print("Content-Type: text/html");
 print()
 import cgi, os,view
 
-
 form=cgi.FieldStorage()
+
 if 'id' in form:
     pageId=form["id"].value
     description = open('data/'+pageId,'r').read()
-    description=description.replace('<','&lt;')
-    description=description.replace('>','&gt;')
-    update_link = '<a href="update.py?id={}">update</a>'.format(pageId)
-    delete_action='''
-        <form action="process_delete.py" method="post">
-            <input type="hidden" name="pageId" value="{}">
-            <input type="submit" value="delete">
-        </form>
-    '''.format(pageId)
 else:
     pageId='Welcome'
     description = 'Share and update your study.'
-    update_link = ''
-    delete_action=''
+
+
 print('''<!doctype html>
 <html>
 <head>
-  <title>Daily_Study</title>
+  <title>Daily_create</title>
   <meta charset="utf-8">
   <link rel="stylesheet" href="style.css">
   <script src="colors.js"> </script>
 </head>
 <body>
-  <h1><a href="index.py"style="color:lightpink">Daily_Study</a></h1>
+  <h1><a href="index.py"style="color:lightpink">Daily_Create</a></h1>
 <div id="grid">
     <ol>
       {listStr}
@@ -39,9 +30,13 @@ print('''<!doctype html>
     <div id="article">
     <h2>{title}</h2>
     {desc}<br><br>
+
+    <form action="process_create.py" method="post">
         <a href="create.py">create</a>
-        {update_link}
-        {delete_action}
+        <form action="process_create.py" method="post">
+        <p><input type="text" name="title" placeholder="title"></p>
+        <p><textarea rows="4" name="description" placeholder="description"></textarea></p>
+        <p><input type="submit"></p>
     </form>
   </div>
 </div>
@@ -51,4 +46,4 @@ print('''<!doctype html>
 ">
 </body>
 </html>
-'''.format(title=pageId,desc=description,listStr=view.getList(),update_link=update_link,delete_action=delete_action))
+'''.format(title=pageId,desc=description,listStr=view.getList()))
